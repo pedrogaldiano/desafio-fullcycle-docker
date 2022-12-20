@@ -1,3 +1,6 @@
+### Link para imagem no DockerHub
+<https://hub.docker.com/repository/docker/pedrogaldiano/desafio-fullcycle-docker>
+
 ### Como gerar a imagem e executá-la
 
 ```
