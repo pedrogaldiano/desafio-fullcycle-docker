@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: db
+    working_dir: /home/mysql
+    volumes:
+      - ./sql/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    networks:
+      - net
+
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - net
+
+  node:
+    image: node
+    user: node
+    working_dir: /home/node
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./node/:/home/node
+    expose:
+      - 80
+    command: >
+      sh -c "npm install mysql2 --save &&
+             npm install express &&
+             node hello.js"
+    # tty: true
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
+
+
+    
