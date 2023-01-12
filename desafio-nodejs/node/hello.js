@@ -25,6 +25,8 @@ app.get('/', (req, res) => {
   `;
     
     res.send("<h1>Full Cycle Rocks!</h1>" + names)
+  }).on('error', function(error) {
+    console.log(error.message);
   })
 })
 

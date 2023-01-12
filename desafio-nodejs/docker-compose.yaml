@@ -35,7 +35,7 @@ services:
     expose:
       - 80
     command: >
-      sh -c "npm install mysql2 --save &&
+      sh -c "npm install mysql2 &&
              npm install express &&
              node hello.js"
     # tty: true
