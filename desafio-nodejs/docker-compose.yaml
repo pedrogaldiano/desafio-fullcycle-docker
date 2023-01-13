@@ -15,6 +15,24 @@ services:
     networks:
       - net
 
+  node:
+    build: ./node
+    user: root
+    working_dir: /node
+    environment:
+      - NODE_ENV=production
+    expose:
+      - 80
+    stdin_open: true
+    tty: true
+    command: >
+      sh -c "./wait-for http://mysql
+             node hello.js"
+    depends_on:
+      - mysql
+    networks:
+      - net
+
   nginx:
     image: nginx:alpine
     ports:
@@ -23,24 +41,10 @@ services:
       - ./nginx/:/etc/nginx/conf.d/
     networks:
       - net
-
-  node:
-    image: node:alpine
-    user: node
-    working_dir: /home/node
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - ./node/:/home/node
-    expose:
-      - 80
-    command: >
-      sh -c "npm install mysql2 &&
-             npm install express &&
-             node hello.js"
-    # tty: true
-    networks:
-      - net
+    depends_on:
+      - mysql
+      - node
+    
 
 networks:
   net:
